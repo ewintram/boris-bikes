@@ -8,14 +8,12 @@ class DockingStation
   end
 
   def release_bike
-    if self.docked_bike
-      @docked_bike
-    else
-      fail "Sorry, no bikes."
-    end
+    fail "Sorry, no bikes." unless @docked_bike
+    @docked_bike
   end
 
   def dock(bike)
+    fail "Sorry, no more capacity." if @docked_bike
     @docked_bike = bike
   end
 
