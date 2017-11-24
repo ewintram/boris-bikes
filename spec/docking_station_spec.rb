@@ -16,12 +16,6 @@ describe DockingStation do
     end
   end
 
-  describe '#request_bike' do
-    it "should create a new bike when called" do
-      expect(subject.request_bike).to be_a_kind_of(Bike)
-    end
-  end
-
   describe '#release_bike' do
     it "should return relased bike when called and there is a bike" do
       subject.dock(Bike.new)
@@ -30,17 +24,26 @@ describe DockingStation do
     it "raise an error when #release_bike is called but there are no bikes" do
       expect {subject.release_bike}.to raise_error("Sorry, no bikes.")
     end
+    it "raises an error when #release_bike is called but the bike is broken" do
+      bike = Bike.new
+      bike.working = false
+      subject.dock bike
+      expect {subject.release_bike}.to raise_error("All bikes broken")
+    end
   end
 
   describe '#dock' do
     it {is_expected.to respond_to(:dock).with(1).argument}
     it "should return the docked bike when called" do
-      expect(subject.dock(@bike)).to eq @bike
+      expect(subject.dock(@bike=Bike.new)).to eq @bike
     end
-
+    it "should be possible to report whether a bike is working when docking" do
+      subject.dock(Bike.new,false)
+      expect(subject.docked_bikes.first.working?).to eq false
+    end 
     it "should raise an error if there is no more capacity for bikes" do
       DockingStation::DEFAULT_CAPACITY.times {subject.dock Bike.new}
-      expect{subject.dock(@bike)}.to raise_error("Sorry, no more capacity.")
+      expect{subject.dock(@bike = Bike.new)}.to raise_error("Sorry, no more capacity.")
     end
   end
 

@@ -9,17 +9,15 @@ class DockingStation
     @capacity = capacity
   end
 
-  def request_bike
-    Bike.new
-  end
-
   def release_bike
     fail "Sorry, no bikes." if empty?
+    fail "All bikes broken" if !@docked_bikes.last.working?
     @docked_bikes.pop
   end
 
-  def dock(bike)
+  def dock(bike, working = bike.working?)
     fail "Sorry, no more capacity." if full?
+    bike.working = working
     @docked_bikes.push(bike)
     @docked_bikes.last
   end
@@ -27,7 +25,7 @@ class DockingStation
   private
 
   def full?
-    @docked_bikes.length == DEFAULT_CAPACITY
+    @docked_bikes.length == @capacity
   end
 
   def empty?
