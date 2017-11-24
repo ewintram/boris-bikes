@@ -15,6 +15,14 @@ class DockingStation
     @docked_bikes.pop
   end
 
+  def release_broken_bikes
+    broken_bikes = []
+    @docked_bikes.each {|bike| 
+       broken_bikes << @docked_bikes.delete(bike)if !bike.working?
+       }
+       broken_bikes
+  end
+
   def dock(bike, working = bike.working?)
     fail "Sorry, no more capacity." if full?
     bike.working = working

@@ -52,4 +52,16 @@ let(:bike) { double :bike, working?: true, :working= => nil }
   describe '#docked_bike' do
     it { is_expected.to respond_to(:docked_bikes)}
   end
+
+  describe '#release_broken_bikes' do
+    it 'should release an array of broken bikes' do
+      allow(bike).to receive(:working?).and_return(false)
+      subject.dock(bike)
+      expect(subject.release_broken_bikes).to eq([bike]) 
+    end
+    it 'should only release broken bikes' do
+
+    end
+
+  end
 end
