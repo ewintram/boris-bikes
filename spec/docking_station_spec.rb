@@ -1,5 +1,20 @@
-require "docking_station.rb"
+require "docking_station"
+
 describe DockingStation do
+
+  describe '#initialize' do
+    it 'should not raise an error if DockingStation is initialized with 1 argument' do
+      expect {DockingStation.new(20)}.not_to raise_error
+    end
+
+    it 'should ensure that the default capacity is set to 20 if no argument is given' do
+      expect(subject.capacity).to eq 20
+    end
+
+    it 'should allow the user to set a capacity' do
+      expect(DockingStation.new(30).capacity).to eq 30
+    end
+  end
 
   describe '#request_bike' do
     it "should create a new bike when called" do
